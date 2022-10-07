@@ -2,11 +2,11 @@ package CourseAssignment;
 
 public class Main {
 
-    static Employee[] employees = new Employee[10];
+    private static Employee[] employees = new Employee[10];
 
     public static void main(String[] args) {
 
-        employees[0] = new Employee("Алексеев", "Артем", "Александрович",1,26000.42);
+        employees[0] = null;
         employees[1] = new Employee("Кичеев", "Святослав", "Романович",2,20050.00);
         employees[2] = new Employee("Иноземцев", "Даниил", "Захарович",3,27000.00);
         employees[3] = new Employee("Калинин", "Марк", "Архипович",4,19000.10);
@@ -21,17 +21,17 @@ public class Main {
         getAllEmployees();
         System.out.println(" ");
         // Пункт 8. b.
-        getSumSalaryPerMonth();
+        System.out.printf("Сумма затрат на зарплаты в месяц: %.2f рублей.", getSumSalaryPerMonth());
         System.out.println(" ");
         System.out.println(" ");
         // Пункт 8. c.
-        getMinSalary();
+        System.out.println("Сотрудник с минимальной зарплатой - " + getMinSalary());
         System.out.println(" ");
         // Пункт 8. d.
-        getMaxSalary();
+        System.out.println("Сотрудник с максимальной зарплатой - " + getMaxSalary());
         System.out.println(" ");
         // Пункт 8. e.
-        getAverageSalary();
+        System.out.printf("Среднее значение зарплат: %.2f рублей.", getAverageSalary());
         System.out.println(" ");
         System.out.println(" ");
         // Пункт 8. f.
@@ -39,61 +39,81 @@ public class Main {
     }
 
     public static void getAllEmployees(){
-        for (int i = 0; i < employees.length; i++){
-            System.out.println(employees[i].toString());
+        for (Employee employee : employees) {
+            System.out.println(employee);
         }
     }
 
-    public static void getSumSalaryPerMonth(){
-        double SumSalaryPerMonth = 0.0d;
-        for (int i = 0; i < employees.length; i++) {
-            SumSalaryPerMonth = SumSalaryPerMonth + employees[i].getSalary();
+    public static double getSumSalaryPerMonth(){
+        double sum = 0;
+        for (Employee employee : employees) {
+            if (employee == null) continue;
+            sum += employee.getSalary();
         }
-        System.out.printf("Сумма затрат на зарплаты в месяц: %.2f рублей.", SumSalaryPerMonth);
+        return sum;
     }
 
-    public static void getMinSalary() {
-        Employee minSalary = null;
+    public static Employee getMinSalary() {
+        double min = 0;
+        int index = 0;
+
         for (int i = 0; i < employees.length; i++) {
-            for (int j = 0; j < employees.length; j++) {
-                if (j != 9)
-                    if (employees[j].getSalary() > employees[j + 1].getSalary()) {
-                        minSalary = employees[j + 1];
-                        employees[j + 1] = employees[j];
-                        employees[j] = minSalary;
-                    }
+            if (employees[i] != null) {
+                min = employees[i].getSalary();
+                index = i;
+                break;
             }
         }
-        System.out.println("Сотрудник с минимальной зарплатой - " + minSalary);
+        Employee minSalary = employees[index];
+        for (int i = index; i < employees.length; i++) {
+            if (employees[i] == null) continue;
+            if (employees[i].getSalary() < min) {
+                min = employees[i].getSalary();
+                minSalary = employees[i];
+            }
+        }
+        return minSalary;
     }
 
-    public static void getMaxSalary() {
+    public static Employee getMaxSalary() {
+        double max = 0;
+        int index = 0;
         Employee maxSalary = null;
         for (int i = 0; i < employees.length; i++) {
-            for (int j = 0; j < employees.length; j++) {
-                if (j != 9)
-                    if (employees[j].getSalary() < employees[j + 1].getSalary()) {
-                        maxSalary = employees[j + 1];
-                        employees[j + 1] = employees[j];
-                        employees[j] = maxSalary;
-                    }
+            if (employees[i] != null) {
+                max = employees[i].getSalary();
+                maxSalary = employees[i];
+                index = i;
+                break;
             }
         }
-        System.out.println("Сотрудник с максимальной зарплатой - " + maxSalary);
+
+        for (int i = index; i < employees.length; i++) {
+            if (employees[i] == null) continue;
+            if (employees[i].getSalary() > max) {
+                max = employees[i].getSalary();
+                maxSalary = employees[i];
+            }
+        }
+        return maxSalary;
     }
 
-    public static void getAverageSalary() {
-        double AverageSalary = 0.0d;
-        for (int i = 0; i < employees.length; i++) {
-            AverageSalary = AverageSalary + employees[i].getSalary();
+    public static double getAverageSalary() {
+        double sum = 0;
+        int countEmp = 0;
+        for (Employee emp : employees) {
+            if (emp == null) continue;
+            countEmp++;
+            sum += emp.getSalary();
         }
-        System.out.printf("Среднее значение зарплат: %.2f рублей.", AverageSalary/employees.length);
+        return sum / countEmp;
     }
 
     public static void getFioEmployees() {
         System.out.println("Список Ф.И.О. работников:");
-        for (int i = 0; i < employees.length; i++){
-            System.out.println("Фамилия: " + employees[i].getSurname() + "\t" + "Имя: " + employees[i].getName() + "\t" + "Отчество: " + employees[i].getMiddleName());
+        for (Employee empl : employees) {
+            if (empl == null) continue;
+            System.out.println(empl.getFullName());
         }
     }
 }

@@ -19,6 +19,7 @@ public class Employee {
     private static int counter;
 
     public Employee(String surname, String name, String middleName, int department, double salary) {
+        if (department < 0 || department > 5) throw new IllegalArgumentException("Введено невалидное значение department");
         counter++;
         this.id = getCounter();
         this.surname = surname;
@@ -58,16 +59,17 @@ public class Employee {
 
     public void setDepartment(int department) {
         if (department < 1 || department > 5) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Введено невалидное значение");
         }
         this.department = department ;
     }
 
-    public double setSalary(double salary) {
-        if (salary > this.salary) {
-            this.salary = salary;
-        }
-        return salary;
+    public void setSalary(double salary) {
+        this.salary = salary;
+    }
+
+    public String getFullName(){
+        return "Фамилия: " + getSurname() + " Имя: " + getName()  + " Отчество: " + getMiddleName();
     }
 
     @Override

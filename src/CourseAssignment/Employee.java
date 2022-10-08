@@ -58,7 +58,7 @@ public class Employee {
     }
 
     public void setDepartment(int department) {
-        if (department < 1 || department > 5) {
+        if (department < 0 || department > 5) {
             throw new IllegalArgumentException("Введено невалидное значение");
         }
         this.department = department ;
